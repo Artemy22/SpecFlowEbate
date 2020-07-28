@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Dynamitey.Internal.Optimization;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -35,11 +36,29 @@ namespace SpecFlowTest
         public readonly By _tabsAgreementsActionView = By.XPath("//*[@id=\"gridAgreement\"]/div/div[2]/div/div[3]");
         public readonly By _tabsAgreementsActionCopy = By.XPath("//*[@id=\"gridAgreement\"]/div/div[2]/div/div[4]");
         public readonly By _tabsAgreementsActionDelete = By.XPath("//*[@id=\"gridAgreement\"]/div/div[2]/div/div[5]");
-        public readonly By _tabsCriteriaCompany = By.XPath("//*[@id=\"k - tabstrip - tabpanel - 1\"]/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[1]/div/span");
-        public readonly By _tabsCriteriaProduct = By.XPath("//*[@id=\"k - tabstrip - tabpanel - 1\"]/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[2]/div/span");
-        public readonly By _tabsCriteriaPrject = By.XPath("//*[@id=\"k - tabstrip - tabpanel - 1\"]/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[3]/div/span");
-        public readonly By _tabsCriteriaAddNewBtnPlusSign = By.XPath("//*[@id=\"btnNew\"]");
-        public readonly By _tabsCriteriaDeleteBtn = By.XPath("//*[@id=\"btnDelete\"]");
+
+        public readonly By _tabsCriteriaCompany = By.XPath  ("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[1]/div/span");
+
+
+        public readonly By _tabsCriteriaProductWithoutCr = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[2]/div/span");
+        // ("//*[@id="kendo-dialog-title-588748"]/div[1]");
+        public readonly By _CriteriaPopupWarningAlreadyExistCancelButton = By.XPath ("/html/body/app-validation-dialog/kendo-dialog/div[2]/kendo-dialog-actions/button");
+        public readonly By _tabsCriteriaProductForExistingCr = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[2]/div/span[2]");
+        
+        public readonly By _tabsCriteriaPrject = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/div/div/div/div[2]/app-criteria-item/kendo-treeview/ul/li[3]/div/span");
+        public readonly By _tabsCriteriaAddNewBtnPlusSign = By.Id("btnNew");
+        public readonly By _tabsCriteriaDeleteBtn = By.Id("btnDelete");
+        public readonly By _popupCriteriaDropDownCriteria = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/app-criteria-dialog/kendo-dialog/div[2]/div/form/div/div[1]/div/kendo-dropdownlist");
+        public readonly By _popupCriteriaDropDownValue = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/app-criteria-dialog/kendo-dialog/div[2]/div/form/div/div[2]/kendo-combobox");
+        public readonly By _popupCriteriaIncludeButton = By.XPath("/html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/app-criteria-dialog/kendo-dialog/div[2]/kendo-dialog-actions/button[1]");
+        public readonly By _popupCriteriaExcludeButton = By.XPath("//html/body/app-home/div/div/div[2]/app-package/app-package-detail/section[2]/div/div/div/div[2]/div[2]/kendo-tabstrip/div/app-criteria-component/app-criteria-dialog/kendo-dialog/div[2]/kendo-dialog-actions/button[2]");
+
+
+
+
+
+         
+
         public readonly By _tabsDocumentsGenerateTradeAgreementBtn = By.XPath("//*[@id=\"gridAgreementFiles\"]/div/div[2]/div/div[2]");
         public readonly By _tabsDocumentsUploadtNewDocumentBtn = By.XPath("//*[@id=\"gridFilesDocuments\"]/div/div[2]/div/div[3]");
         public readonly By _tabsDocumentsDeleteDocumentBtn = By.XPath("//*[@id=\"action32\"]");
@@ -79,6 +98,93 @@ namespace SpecFlowTest
             _webDriver = webDriver;
         }
 
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductBrand()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Brand']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }        
+        public PackageEditorScreenPageObject CriteriaPopupSetProductBrandDove()
+        {
+            Actions actions = new Actions(_webDriver);
+            _webDriver.FindElement(_popupCriteriaDropDownValue).Click();
+            actions.SendKeys("Dove").Perform();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Dove']")).Click();
+            _webDriver.FindElement(_popupCriteriaIncludeButton).Click();
+            try
+            {
+                _webDriver.FindElement(_CriteriaPopupWarningAlreadyExistCancelButton).Click();
+                _webDriver.FindElement(_popupCriteriaExcludeButton).Click();
+                return new PackageEditorScreenPageObject(_webDriver);
+            }
+            catch { return new PackageEditorScreenPageObject(_webDriver); }
+        }
+        public PackageEditorScreenPageObject CriteriaPopupSetProductBrandXHC()
+        {
+            Actions actions = new Actions(_webDriver);
+            actions.SendKeys("XHC").Perform();
+            _webDriver.FindElement(_popupCriteriaDropDownValue).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'XHC']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupSetProductBrandDeepHeat()
+        {
+            Actions actions = new Actions(_webDriver);
+            actions.SendKeys("Deep").Perform();
+            _webDriver.FindElement(_popupCriteriaDropDownValue).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Deep Heat']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupSetProductBrandDylon()
+        {
+            Actions actions = new Actions(_webDriver);
+            actions.SendKeys("Dylon").Perform();
+            _webDriver.FindElement(_popupCriteriaDropDownValue).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Dylon']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductDateCreated()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Date created']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductDateModified()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Date modified']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductMajorGroup()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Major Group']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductMinorGroup()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Minor Group']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductProductCode()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Product Code']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductProductDescription()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Product Description']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        }
+        public PackageEditorScreenPageObject CriteriaPopupChooseProductProductType()
+        {
+            _webDriver.FindElement(_popupCriteriaDropDownCriteria).Click();
+            _webDriver.FindElement(By.XPath("//ul/li[text() = 'Product : Product Type']")).Click();
+            return new PackageEditorScreenPageObject(_webDriver);
+        } 
         public PackageEditorScreenPageObject ClickBreadCrumbsHomeBtn()
         {
             _webDriver.FindElement(_BreadCrumbsHomeBtn).Click();
@@ -168,7 +274,12 @@ namespace SpecFlowTest
         }
         public PackageEditorScreenPageObject ClickTabsCriteriaProduct()
         {
-            _webDriver.FindElement(_tabsCriteriaProduct).Click();
+            //_webDriver.FindElement(By.XPath("//ul/li[text() = 'Product']")).Click();
+           try
+            {
+                _webDriver.FindElement(_tabsCriteriaProductWithoutCr).Click();
+            }
+            catch { _webDriver.FindElement(_tabsCriteriaProductForExistingCr).Click(); }
             return new PackageEditorScreenPageObject(_webDriver);
         }
         public PackageEditorScreenPageObject ClickTabsCriteriaPrject()

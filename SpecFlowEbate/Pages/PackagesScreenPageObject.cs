@@ -18,7 +18,7 @@ namespace SpecFlowTest
         public readonly By _orderById = By.XPath("//*[@id=\"gridPackageOverview\"]/div/div[2]/kendo-grid/div/div/div/table/thead/tr/th[3]/a");
         public readonly By _firstRow = By.XPath("//*[@id=\"gridPackageOverview\"]/div/div[2]/kendo-grid/div/kendo-grid-list/div/div[1]/table/tbody/tr[1]/td[2]/label");
         public readonly By _actionEditButton = By.XPath("//*[@id=\"gridPackageOverview\"]/div/div[2]/div/div[2]");
-        public readonly By _actionViewButton = By.XPath("/html/body/app-home/div/div/div[2]/app-agreement/app-agreement/section[2]/div/base-grid/div/div[2]/div/div[3]/button");
+        public readonly By _actionViewButton = By.XPath("//*[@id=\"action546\"]/span");
         public readonly By _actionCopyButton = By.XPath("//*[@id=\"gridPackageOverview\"]/div/div[2]/div/div[4]");
         public readonly By _actionDeleteButton = By.XPath("//*[@id=\"gridPackageOverview\"]/div/div[2]/div/div[5]");
         public readonly By _searchInput = By.XPath("//*[@id=\"filterText\"]");
@@ -114,7 +114,7 @@ namespace SpecFlowTest
         }
         public PackagesScreenPageObject ClickActionViewButton()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(1500);
             _webDriver.FindElement(_actionViewButton).Click();
             return new PackagesScreenPageObject(_webDriver);
         }
